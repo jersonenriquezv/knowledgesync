@@ -1,0 +1,50 @@
+---
+description: "Estructura base y convenciones para el MVP KnowledgeSync"
+globs:
+  - "**/*.py"
+  - "docker-compose.yml"
+  - "Dockerfile"
+alwaysApply: true
+---
+
+# Objetivo del proyecto:
+Construir un MVP de una app que permite a los usuarios guardar y sincronizar notas, usando autenticación con Google y capacidades de IA.
+
+# Estructura del backend (FastAPI):
+- `app/main.py`: Solo contiene la instancia de FastAPI, conexión a DB y `include_router`
+- `app/database.py`: Conexión a PostgreSQL con SQLAlchemy + `SessionLocal` y `Base`
+- `app/models/`: Modelos SQLAlchemy con `__tablename__`, columnas bien tipadas
+- `app/schemas/`: Schemas Pydantic separados por acción (`UserCreate`, `UserOut`, `NoteCreate`, `NoteUpdate`, etc.)
+- `app/routers/`: Endpoints agrupados por entidad (`user.py`, `note.py`)
+- `app/crud/` (opcional): Funciones que manejan la lógica CRUD para desacoplar de los routers
+
+# Convenciones para endpoints:
+- Usar rutas REST:  
+  - `GET /users`  
+  - `GET /users/{id}`  
+  - `POST /users`  
+  - `PUT /users/{id}`  
+  - `DELETE /users/{id}`
+- Tipar las respuestas con `response_model`
+- Usar `Depends(get_db)` para acceder a la base de datos
+
+# Docker / DevOps:
+- Docker Compose levanta 3 servicios: frontend, backend y db (PostgreSQL)
+- `depends_on` está configurado, pero considerar usar `wait-for-it` si hay errores de sincronización
+- `.env` para credenciales sensibles
+
+# Frontend (React + Vite):
+- Se comunica con el backend usando `fetch` o `axios`
+- Carpeta `/frontend/src/pages/` para vistas principales
+- Carpeta `/frontend/src/components/` para componentes reutilizables
+
+# Estilo y herramientas:
+- Usa tipado estricto en Python (con Pydantic + SQLAlchemy)
+- Sigue PEP8
+- No repetir lógica: si un schema o modelo ya existe, reutilízalo
+- No mezclar lógica del frontend con el backend
+
+# Comentarios:
+- Evitar comentarios innecesarios. El código debe ser autoexplicativo.
+- Si usas IA (Cursor, ChatGPT) para generar código, revisa bien las respuestas. La calidad > velocidad.
+
