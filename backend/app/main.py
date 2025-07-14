@@ -14,7 +14,8 @@ app = FastAPI(title="KnowledgeSync API", description="API for the KnowledgeSync 
 # Add CORS middleware with environment-aware configuration
 origins = [
     "http://localhost:5173",  # Frontend development
-    "http://localhost:3000",  # Alternative frontend port
+    "http://localhost:3000",
+    "https://knowledgesync-navy.vercel.app",
 ]
 
 if settings.ENVIRONMENT == "production":
