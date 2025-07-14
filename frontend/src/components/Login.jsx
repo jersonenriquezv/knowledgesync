@@ -12,9 +12,10 @@ const Login = ({ onLogin }) => {
     e.preventDefault()
     
     try {
+      const API_URL = import.meta.env.VITE_API_URL;
       const url = isRegistering 
-        ? 'http://localhost:8000/user/' 
-        : 'http://localhost:8000/user/users'
+        ? `${API_URL}/user/` 
+        : `${API_URL}/user/users`
       
       const response = await fetch(url, {
         method: isRegistering ? 'POST' : 'GET',

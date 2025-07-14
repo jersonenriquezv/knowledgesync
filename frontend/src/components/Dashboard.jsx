@@ -7,6 +7,7 @@ const Dashboard = ({ user, onLogout }) => {
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [newNote, setNewNote] = useState({ title: '', content: '' })
   const navigate = useNavigate()
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     fetchNotes()
@@ -14,7 +15,7 @@ const Dashboard = ({ user, onLogout }) => {
 
   const fetchNotes = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/notes/`)
+      const response = await fetch(`${API_URL}/notes/`)
       if (response.ok) {
         const allNotes = await response.json()
         // Filtrar notas del usuario actual
@@ -31,7 +32,7 @@ const Dashboard = ({ user, onLogout }) => {
   const handleCreateNote = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch('http://localhost:8000/notes/', {
+      const response = await fetch(`${API_URL}/notes/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +57,7 @@ const Dashboard = ({ user, onLogout }) => {
   const handleDeleteNote = async (noteId) => {
     if (window.confirm('Are you sure you want to delete this note?')) {
       try {
-        const response = await fetch(`http://localhost:8000/notes/${noteId}`, {
+        const response = await fetch(`${API_URL}/notes/${noteId}`, {
           method: 'DELETE'
         })
 

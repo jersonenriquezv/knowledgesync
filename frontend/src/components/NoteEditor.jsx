@@ -11,6 +11,8 @@ const NoteEditor = ({ user, onLogout }) => {
   const [conversations, setConversations] = useState([])
   const [showChat, setShowChat] = useState(false)
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     fetchNote()
     fetchConversations()
@@ -18,7 +20,7 @@ const NoteEditor = ({ user, onLogout }) => {
 
   const fetchNote = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/notes/${id}`)
+      const response = await fetch(`${API_URL}/notes/${id}`)
       if (response.ok) {
         const noteData = await response.json()
         // Verify that the note belongs to the user
@@ -42,7 +44,7 @@ const NoteEditor = ({ user, onLogout }) => {
 
   const fetchConversations = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/ai/conversations/${id}?user_id=${user.id}`)
+      const response = await fetch(`${API_URL}/ai/conversations/${id}?user_id=${user.id}`)
       if (response.ok) {
         const conversationsData = await response.json()
         setConversations(conversationsData)
@@ -55,7 +57,7 @@ const NoteEditor = ({ user, onLogout }) => {
   const handleSave = async () => {
     setSaving(true)
     try {
-      const response = await fetch(`http://localhost:8000/notes/${id}`, {
+      const response = await fetch(`${API_URL}/notes/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +86,7 @@ const NoteEditor = ({ user, onLogout }) => {
     if (!aiQuestion.trim()) return
 
     try {
-      const response = await fetch('http://localhost:8000/ai/ask', {
+      const response = await fetch(`${API_URL}/ai/ask`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
